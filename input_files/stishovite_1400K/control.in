@@ -1,0 +1,39 @@
+set nrowmax 42
+rseed
+#
+species hydrogen /home/nstolte/HSCV/D_HSCV_PBE-1.0.xml 
+species oxygen   /home/nstolte/HSCV/O_HSCV_PBE-1.0.xml
+species carbon   /home/nstolte/HSCV/C_HSCV_PBE-1.0.xml
+species silicon  /home/nstolte/HSCV/Si_HSCV_PBE-1.0.xml
+#
+set xc PBE
+set ecut 85
+set wf_dyn PSDA
+set ecutprec 5
+set scf_tol 0.00000001
+1.qbox
+#
+randomize_wf
+run 0 500
+#
+set atoms_dyn MD
+set thermostat BDP
+set th_temp 1400
+set th_time 1000
+set dt 10  
+#
+constraint define position fix1 Si1
+constraint define position fix2 Si3
+constraint define position fix3 Si5
+constraint define position fix4 Si7
+constraint define position fix5 Si9
+constraint define position fix6 Si11
+constraint define position fix7 Si13
+constraint define position fix8 Si15
+#
+reset_vcm
+#
+set wf_diag F
+run 8000 8
+status
+save RESTART.xml
